@@ -1,5 +1,5 @@
 {
-  "name": "figma-layer-path",
+  "name": "@yuja-rides/figma-layer-path",
   "version": "0.1.0",
   "description": "Find layers in a Figma node tree by layer path: the names of the layers from a root down to the target, one per level. Each layer's children are read at most once per pass.",
   "keywords": [
