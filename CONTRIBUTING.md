@@ -87,7 +87,9 @@ A maintainer merges a pull request once its checks pass and the review is resolv
 
 Maintainers release by creating a GitHub release named `v<version>` from `main`, where
 `<version>` is the `version` in `package.json`. The release workflow runs every check again,
-confirms the tag matches the version, and publishes to npm with provenance.
+confirms the tag matches the version, and stages the version on npm with provenance. The
+version goes live once a maintainer approves it with 2FA, on npmjs.com under Staged Packages
+or with `npm stage approve <id>`.
 
 ## Licence
 
