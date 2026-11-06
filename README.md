@@ -1,6 +1,7 @@
 # figma-layer-path
 
 [![CI](https://github.com/Meiro-Mobility/figma-layer-path/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Meiro-Mobility/figma-layer-path/actions/workflows/ci.yml?query=branch%3Amain)
+[![npm](https://img.shields.io/npm/v/@yuja-rides/figma-layer-path)](https://www.npmjs.com/package/@yuja-rides/figma-layer-path)
 
 Find layers in a Figma node tree by layer path, reading each layer's children at most once per
 pass.
