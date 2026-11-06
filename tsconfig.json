@@ -18,6 +18,6 @@
     "checkJs": true,
     "noEmit": true
   },
-  "include": ["src", "test", "*.ts", "*.js"],
+  "include": ["src", "test", "scripts", "*.ts", "*.js"],
   "exclude": ["test/figma-typings.test-d.ts"]
 }
