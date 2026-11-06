@@ -1,0 +1,74 @@
+# Local-only plans
+*PLAN.md
+
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+*.keystore
+credentials.json
+credentials.*.json
+secrets/
+.secrets/
+
+# Dependencies and package-manager state
+node_modules/
+.npm/
+
+# Build output
+dist/
+*.tsbuildinfo
+*.tgz
+
+# Tests and tool caches
+coverage/
+.eslintcache
+.cache/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+
+# Temporary files
+tmp/
+temp/
+
+# Editor and IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+*~
+*.bak
+
+# Operating-system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+System Volume Information/
+
+# APM
+apm_modules/
+apm.lock.yaml
+apm.yml
+
+# Local agent packages
+# Codex
+.agents/
+.codex/
+AGENTS.md
+# Claude
+.claude/
+CLAUDE.md
