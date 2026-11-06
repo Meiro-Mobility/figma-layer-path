@@ -1,0 +1,55 @@
+{
+  "name": "figma-layer-path",
+  "version": "0.1.0",
+  "description": "Find layers in a Figma node tree by layer path: the names of the layers from a root down to the target, one per level. Each layer's children are read at most once per pass.",
+  "keywords": [
+    "figma",
+    "figma-plugin",
+    "layers",
+    "layer-path"
+  ],
+  "homepage": "https://github.com/Meiro-Mobility/figma-layer-path#readme",
+  "bugs": {
+    "url": "https://github.com/Meiro-Mobility/figma-layer-path/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Meiro-Mobility/figma-layer-path.git"
+  },
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.figma.json",
+    "lint": "eslint src test \"*.js\" \"*.ts\"",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "build": "tsc -p tsconfig.build.json",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run test && npm run build",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@figma/plugin-typings": "^1.142.0",
+    "@types/node": "^24.19.2",
+    "eslint": "^10.14.0",
+    "prettier": "^3.9.10",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.1.0"
+  }
+}
