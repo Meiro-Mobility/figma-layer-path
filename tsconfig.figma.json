@@ -3,7 +3,7 @@
   "compilerOptions": {
     "types": ["@figma/plugin-typings"],
     "paths": {
-      "figma-layer-path": ["./src/index.ts"]
+      "@yuja-rides/figma-layer-path": ["./src/index.ts"]
     }
   },
   "include": ["src", "test/figma-typings.test-d.ts", ".cache/readme-examples"],

@@ -44,7 +44,7 @@ callbacks and read every child's name, and `findAllWithCriteria` filters by type
 ## Install
 
 ```sh
-npm install figma-layer-path
+npm install @yuja-rides/figma-layer-path
 ```
 
 The package is ESM only, with no runtime dependencies. Bundle it into your plugin's code as you
@@ -58,7 +58,7 @@ Finds the layer at one layer path, in a single walk that stops at the first matc
 each level. Gives `undefined` where any step is missing, and for an empty path.
 
 ```typescript
-import { findLayer } from "figma-layer-path";
+import { findLayer } from "@yuja-rides/figma-layer-path";
 
 const [instance] = figma.currentPage.selection;
 if (instance?.type === "INSTANCE") {
@@ -76,7 +76,7 @@ children, and their names, at most once. Create one per pass and drop it afterwa
 layer's children can change between edits.
 
 ```typescript
-import { createLayerFinder } from "figma-layer-path";
+import { createLayerFinder } from "@yuja-rides/figma-layer-path";
 
 const finder = createLayerFinder<SceneNode>();
 for (const node of figma.currentPage.selection) {
@@ -99,7 +99,7 @@ once. The result has the map's shape, with each layer path replaced by its layer
 where it is missing.
 
 ```typescript
-import { findLayers } from "figma-layer-path";
+import { findLayers } from "@yuja-rides/figma-layer-path";
 
 const [instance] = figma.currentPage.selection;
 if (instance?.type === "INSTANCE") {
