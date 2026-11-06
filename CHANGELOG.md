@@ -7,6 +7,12 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-06
+
+### Changed
+
+- The README shows the published npm version.
+
 ## [0.1.0] - 2026-11-06
 
 ### Added
@@ -18,5 +24,6 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   result in the map's shape.
 - Types `LayerNode`, `LayerPath`, `LayerMap`, `FoundLayers`, and `LayerFinder`.
 
-[Unreleased]: https://github.com/Meiro-Mobility/figma-layer-path/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/Meiro-Mobility/figma-layer-path/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/Meiro-Mobility/figma-layer-path/releases/tag/v0.1.1
 [0.1.0]: https://github.com/Meiro-Mobility/figma-layer-path/releases/tag/v0.1.0
