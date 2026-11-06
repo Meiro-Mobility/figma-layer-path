@@ -33,7 +33,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.figma.json",
+    "typecheck": "node scripts/extract-readme-examples.js && tsc -p tsconfig.json && tsc -p tsconfig.figma.json",
     "lint": "eslint src test scripts \"*.js\" \"*.ts\"",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
