@@ -146,6 +146,11 @@ if (instance?.type === "INSTANCE") {
 - Caching across passes, since a layer's children change between edits.
 - Knowledge of any particular component's structure.
 
+## Contributing
+
+See [CONTRIBUTING.md](https://github.com/Meiro-Mobility/figma-layer-path/blob/main/CONTRIBUTING.md)
+for setup, the checks a change must pass, and how pull requests and releases work.
+
 ## Licence
 
 [MIT](https://github.com/Meiro-Mobility/figma-layer-path/blob/main/LICENSE)
