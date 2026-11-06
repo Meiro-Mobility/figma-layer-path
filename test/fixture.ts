@@ -66,6 +66,40 @@ export const missingPaths: readonly LayerPath[] = [
   ["card", "content", "footer", "tertiary-button"],
 ];
 
+/** A copy of a tree that counts reads of each layer's `children`, keyed by layer id. */
+export interface ReadCountingTree {
+  readonly root: TestNode;
+  /** Reads of `children` so far, for each layer read at least once. */
+  readonly reads: ReadonlyMap<string, number>;
+  /** Reads of `children` so far, across every layer. */
+  totalReads(): number;
+}
+
+/**
+ * Copies a tree with a counting `children` getter on every layer, leaves included, so a test can
+ * assert how often a lookup crosses into a layer's children, as each read does in Figma.
+ */
+export function withReadCounting(tree: TestNode): ReadCountingTree {
+  const reads = new Map<string, number>();
+  const copy = (node: TestNode): TestNode => {
+    const children = node.children?.map(copy);
+    const counted: TestNode = { id: node.id, name: node.name };
+    Object.defineProperty(counted, "children", {
+      enumerable: true,
+      get: () => {
+        reads.set(node.id, (reads.get(node.id) ?? 0) + 1);
+        return children;
+      },
+    });
+    return counted;
+  };
+  return {
+    root: copy(tree),
+    reads,
+    totalReads: () => [...reads.values()].reduce((sum, count) => sum + count, 0),
+  };
+}
+
 /** Every layer path in a tree, in depth-first order, one per layer (repeated names repeat). */
 export function allPaths(root: TestNode): LayerPath[] {
   const paths: LayerPath[] = [];
