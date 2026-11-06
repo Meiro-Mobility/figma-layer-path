@@ -1,11 +1,14 @@
-# Publishes the package to npm, with provenance, when a GitHub release is published.
+# Stages the package on npm, with provenance, when a GitHub release is published. A staged
+# version goes live only when a maintainer approves it with 2FA, on npmjs.com under Staged
+# Packages or with `npm stage approve <id>`, so no release reaches users without a person.
 #
-# npm authenticates the publish through trusted publishing: it verifies this workflow by
-# GitHub's OIDC token against the package's trusted publisher settings on npmjs.com, so no
-# npm token is stored anywhere.
+# npm authenticates the workflow through trusted publishing: it verifies GitHub's OIDC token
+# against the package's trusted publisher settings on npmjs.com, which allow staging only, so
+# no npm token is stored anywhere.
 #
 # Run it by hand (workflow_dispatch) to rehearse a release: every step runs except the real
-# publish, which becomes `npm publish --dry-run`, and the tag check, which needs a release.
+# staging, which becomes `npm stage publish --dry-run`, and the tag check, which needs a
+# release.
 name: Release
 
 on:
@@ -47,11 +50,11 @@ jobs:
 
       - name: Check the npm version
         run: |
-          required=11.5.1
+          required=11.15.0
           actual="$(npm --version)"
           # sort -V -C succeeds only when the lines are already in version order.
           if ! printf '%s\n%s\n' "$required" "$actual" | sort -V -C; then
-            echo "npm $actual is older than $required, the minimum for trusted publishing." >&2
+            echo "npm $actual is older than $required, the minimum for staged publishing." >&2
             exit 1
           fi
           echo "npm $actual"
@@ -73,10 +76,10 @@ jobs:
             exit 1
           fi
 
-      - name: Publish
+      - name: Stage for approval
         if: github.event_name == 'release'
-        run: npm publish --access public --provenance
+        run: npm stage publish --access public --provenance
 
-      - name: Publish (dry run)
+      - name: Stage for approval (dry run)
         if: github.event_name == 'workflow_dispatch'
-        run: npm publish --access public --dry-run
+        run: npm stage publish --access public --dry-run
