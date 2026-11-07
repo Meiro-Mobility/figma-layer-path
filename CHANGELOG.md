@@ -7,6 +7,12 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- `findLayers(root, map, finder)` takes an optional finder, so lookups on the same instance
+  across several calls in one pass share reads of its layers. Without a finder, `findLayers`
+  behaves as before.
+
 ## [0.2.0] - 2026-11-07
 
 ### Added

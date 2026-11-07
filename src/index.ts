@@ -118,13 +118,23 @@ function resolveMap<C extends LayerNode<C>>(
 /**
  * Finds every layer path in a nested map with one finder, so layer paths sharing a prefix read it
  * once. The result has the map's shape, with each layer path replaced by its layer or undefined.
+ *
+ * Pass `finder` to share reads with other lookups on the same instance in this pass: layers the
+ * finder has read are not read again, and layers read now are shared with later lookups through
+ * it. Without it, the call uses a finder of its own.
+ *
+ * @example
+ * const finder = createLayerFinder<SceneNode>();
+ * const title = finder.find(instance, ["card", "content", "header", "title"]);
+ * const buttons = findLayers(instance, buttonLayers, finder);
  */
 export function findLayers<C extends LayerNode<C>, M>(
   root: LayerNode<C>,
   map: M & CheckedLayerMap<M>,
+  finder: LayerFinder<C> = createLayerFinder<C>(),
 ): FoundLayers<M, C> {
   // `CheckedLayerMap` has already checked every leaf, but the checker cannot relate it to
   // `LayerMap`, nor the recursion that follows the map's shape to the mapped return type; the
   // tests cover each shape.
-  return resolveMap(createLayerFinder<C>(), root, map as LayerMap) as FoundLayers<M, C>;
+  return resolveMap(finder, root, map as LayerMap) as FoundLayers<M, C>;
 }
