@@ -30,6 +30,8 @@ type Equals<A, B> =
         : false;
 
 declare const instance: InstanceNode;
+declare const page: PageNode;
+declare const text: TextNode;
 declare const path: LayerPath;
 
 // Exported only so they count as used; their types are what the checks read.
@@ -40,6 +42,15 @@ export const viaMap = findLayers(instance, {
   buttons: { primary: ["card", "content", "footer", "primary-button", "label"] },
 });
 
+export const viaPage = findLayer(page, path);
+// The document's children are pages, not scene nodes, so `C` must be given as `BaseNode`.
+// @ts-expect-error `figma.root` does not fit `LayerNode<C>` for any inferred `C`.
+findLayer(figma.root, path);
+export const viaDocument = findLayer<BaseNode>(figma.root, path);
+// A root with no `children` infers `C` as `unknown`; giving `SceneNode` restores the result type.
+export const viaLeafInferred = findLayer(text, path);
+export const viaLeaf = findLayer<SceneNode>(text, path);
+
 export type Checks = [
   Expect<Fits<SceneNode, LayerNode<SceneNode>>>,
   Expect<Fits<InstanceNode, LayerNode<SceneNode>>>,
@@ -48,4 +59,8 @@ export type Checks = [
   Expect<Equals<typeof viaFinder, SceneNode | undefined>>,
   Expect<Equals<typeof viaMap.title, SceneNode | undefined>>,
   Expect<Equals<typeof viaMap.buttons.primary, SceneNode | undefined>>,
+  Expect<Equals<typeof viaPage, SceneNode | undefined>>,
+  Expect<Equals<typeof viaDocument, BaseNode | undefined>>,
+  Expect<Equals<typeof viaLeafInferred, LayerNode<unknown> | undefined>>,
+  Expect<Equals<typeof viaLeaf, SceneNode | undefined>>,
 ];
