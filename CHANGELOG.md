@@ -11,6 +11,12 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Type `CheckedLayerMap<M>`, the shape `findLayers` checks a map against, key by key.
 
+### Changed
+
+- The README starts with when to use the library and when Figma's own API fits better, explains
+  why it reads fewer layers, says which function to pick, and covers the roots that need `C`
+  given explicitly, such as `figma.root`.
+
 ### Fixed
 
 - `findLayers` accepts maps typed with interfaces, alone and nested, which have no index
