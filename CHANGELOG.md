@@ -7,6 +7,16 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- Type `CheckedLayerMap<M>`, the shape `findLayers` checks a map against, key by key.
+
+### Fixed
+
+- `findLayers` accepts maps typed with interfaces, alone and nested, which have no index
+  signature and so did not fit `LayerMap`. Every map accepted before is still accepted, with the
+  same result type, and arrays of layer paths and functions are still rejected.
+
 ## [0.1.1] - 2026-11-07
 
 ### Changed

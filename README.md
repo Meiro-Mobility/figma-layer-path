@@ -127,6 +127,9 @@ if (instance?.type === "INSTANCE") {
   nodes fit it as they are, and the layers found keep their own type, such as `SceneNode`.
 - `LayerPath`: a `readonly string[]` of layer names, one per level.
 - `LayerMap`: a layer path, or an object whose values are layer maps.
+- `CheckedLayerMap<M>`: the shape `findLayers` checks a map `M` against, key by key. Maps typed
+  with interfaces fit it as well as type aliases and object literals do, while a leaf that is not
+  a layer path, an array of layer paths, or a function does not.
 - `FoundLayers<M, C>`: the result of `findLayers`, in the shape of the map `M`.
 - `LayerFinder<C>`: the object `createLayerFinder` returns, with one method,
   `find(root, path)`.

@@ -13,6 +13,21 @@ export type LayerPath = readonly string[];
 /** A nested map whose leaves are layer paths. */
 export type LayerMap = LayerPath | { readonly [key: string]: LayerMap };
 
+/**
+ * The shape `findLayers` accepts for a map `M`, checked key by key. It is `M`'s own shape where
+ * every leaf is a layer path and `never` at any leaf that is not, so `M & CheckedLayerMap<M>`
+ * accepts maps typed with interfaces, which have no index signature and so do not fit `LayerMap`.
+ * Arrays other than layer paths, and functions, are rejected because at runtime an array is read
+ * as a single layer path and a function is not a map.
+ */
+export type CheckedLayerMap<M> = M extends LayerPath
+  ? M
+  : M extends readonly unknown[] | ((...args: never[]) => unknown)
+    ? never
+    : M extends object
+      ? { readonly [K in keyof M]: CheckedLayerMap<M[K]> }
+      : never;
+
 /** A map with each layer path replaced by the layer found there, or undefined where it is missing. */
 export type FoundLayers<M, C> = M extends LayerPath
   ? C | undefined
@@ -104,11 +119,12 @@ function resolveMap<C extends LayerNode<C>>(
  * Finds every layer path in a nested map with one finder, so layer paths sharing a prefix read it
  * once. The result has the map's shape, with each layer path replaced by its layer or undefined.
  */
-export function findLayers<C extends LayerNode<C>, M extends LayerMap>(
+export function findLayers<C extends LayerNode<C>, M>(
   root: LayerNode<C>,
-  map: M,
+  map: M & CheckedLayerMap<M>,
 ): FoundLayers<M, C> {
-  // The recursion follows the map's shape at runtime, which the checker cannot relate to the
-  // mapped return type; the tests cover each shape.
-  return resolveMap(createLayerFinder<C>(), root, map) as FoundLayers<M, C>;
+  // `CheckedLayerMap` has already checked every leaf, but the checker cannot relate it to
+  // `LayerMap`, nor the recursion that follows the map's shape to the mapped return type; the
+  // tests cover each shape.
+  return resolveMap(createLayerFinder<C>(), root, map as LayerMap) as FoundLayers<M, C>;
 }
