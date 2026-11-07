@@ -121,15 +121,40 @@ if (instance?.type === "INSTANCE") {
 }
 ```
 
+A map can be declared once, as an interface or a type alias, and reused for every instance:
+
+```typescript
+import { findLayers, type LayerPath } from "@yuja-rides/figma-layer-path";
+
+interface ButtonLayers {
+  readonly primary: LayerPath;
+  readonly secondary: LayerPath;
+}
+
+const buttonLayers: ButtonLayers = {
+  primary: ["card", "content", "footer", "primary-button", "label"],
+  secondary: ["card", "content", "footer", "secondary-button", "label"],
+};
+
+for (const node of figma.currentPage.selection) {
+  if (node.type === "INSTANCE") {
+    const { primary, secondary } = findLayers(node, buttonLayers);
+    console.log(node.name, primary?.name, secondary?.name);
+  }
+}
+```
+
 ### Types
 
 - `LayerNode<C>`: any node with a `name` and, optionally, `children` of type `C`. Figma's scene
   nodes fit it as they are, and the layers found keep their own type, such as `SceneNode`.
 - `LayerPath`: a `readonly string[]` of layer names, one per level.
-- `LayerMap`: a layer path, or an object whose values are layer maps.
-- `CheckedLayerMap<M>`: the shape `findLayers` checks a map `M` against, key by key. Maps typed
-  with interfaces fit it as well as type aliases and object literals do, while a leaf that is not
-  a layer path, an array of layer paths, or a function does not.
+- `LayerMap`: a layer path, or an object whose values are layer maps. Use it to annotate maps
+  built at runtime. An interface does not fit it, because interfaces have no index signature,
+  but `findLayers` accepts interface-typed maps directly.
+- `CheckedLayerMap<M>`: the shape `findLayers` checks a map `M` against, key by key. It rejects a
+  leaf that is not a layer path, an array of layer paths (which would be read as one path), and a
+  function. The error names the bad key and reads as not assignable to `never`.
 - `FoundLayers<M, C>`: the result of `findLayers`, in the shape of the map `M`.
 - `LayerFinder<C>`: the object `createLayerFinder` returns, with one method,
   `find(root, path)`.
