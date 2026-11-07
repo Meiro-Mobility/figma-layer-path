@@ -64,7 +64,7 @@ Pick the function by how your lookups arrive:
 | Several paths, all known up front          | `findLayers`          | One call, with a result in the shape of your map                        |
 | Paths spread through code, or across loops | `createLayerFinder()` | Lookups share reads for as long as you keep the finder                  |
 
-### `findLayers(root, map)`
+### `findLayers(root, map, finder?)`
 
 Finds every layer path in a nested map in one pass. The result has the map's shape, with each
 layer path replaced by its layer, or `undefined` where it is missing.
@@ -109,6 +109,32 @@ for (const node of figma.currentPage.selection) {
     const { primary, secondary } = findLayers(node, buttonLayers);
     console.log(node.name, primary?.name, secondary?.name);
   }
+}
+```
+
+To look up layers of the same instance across several calls, pass one finder to each. Layers
+the finder has already read are not read again, and the layers `findLayers` reads are shared
+with later lookups through the finder. Without a finder, `findLayers` uses one of its own for the
+call. Either way, a finder lives for one pass only.
+
+```typescript
+import { createLayerFinder, findLayers } from "@yuja-rides/figma-layer-path";
+
+const [instance] = figma.currentPage.selection;
+if (instance?.type === "INSTANCE") {
+  const finder = createLayerFinder<SceneNode>();
+  const title = finder.find(instance, ["card", "content", "header", "title"]);
+  console.log(title?.name);
+  // card and content are not read again: the finder read them for the title.
+  const buttons = findLayers(
+    instance,
+    {
+      primary: ["card", "content", "footer", "primary-button", "label"],
+      secondary: ["card", "content", "footer", "secondary-button", "label"],
+    },
+    finder,
+  );
+  console.log(buttons.primary?.name, buttons.secondary?.name);
 }
 ```
 

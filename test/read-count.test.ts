@@ -85,6 +85,56 @@ describe("reads of children", () => {
     expect(tree.totalReads()).toBe(14);
   });
 
+  it("are shared between a finder's lookups and findLayers given that finder", () => {
+    // finder.find for title reads instance, card, content, and header. findLayers for the two
+    // labels then reads only footer, primary-button, and secondary-button, because the finder
+    // has already read instance, card, and content. Seven layers, each read once.
+    const tree = withReadCounting(createFixture());
+    const finder = createLayerFinder<TestNode>();
+    finder.find(tree.root, titlePath);
+    expect(tree.totalReads()).toBe(4);
+    findLayers(tree.root, { primary: primaryLabelPath, secondary: secondaryLabelPath }, finder);
+    expect(tree.reads).toEqual(
+      new Map([
+        ["instance", 1],
+        ["card", 1],
+        ["content", 1],
+        ["header", 1],
+        ["footer", 1],
+        ["primary-button", 1],
+        ["secondary-button", 1],
+      ]),
+    );
+    expect(tree.totalReads()).toBe(7);
+
+    // Layers read by findLayers are shared with later lookups through the finder: the path to
+    // the secondary label reads nothing new.
+    finder.find(tree.root, secondaryLabelPath);
+    expect(tree.totalReads()).toBe(7);
+  });
+
+  it("repeat the shared ancestors when findLayers is not given the finder", () => {
+    // finder.find for title reads instance, card, content, and header: 4. findLayers then uses
+    // a finder of its own and reads instance, card, content, footer, primary-button, and
+    // secondary-button: 6. Ten reads in all, with instance, card, and content read twice.
+    const tree = withReadCounting(createFixture());
+    const finder = createLayerFinder<TestNode>();
+    finder.find(tree.root, titlePath);
+    findLayers(tree.root, { primary: primaryLabelPath, secondary: secondaryLabelPath });
+    expect(tree.reads).toEqual(
+      new Map([
+        ["instance", 2],
+        ["card", 2],
+        ["content", 2],
+        ["header", 1],
+        ["footer", 1],
+        ["primary-button", 1],
+        ["secondary-button", 1],
+      ]),
+    );
+    expect(tree.totalReads()).toBe(10);
+  });
+
   it("are none for an empty map", () => {
     const tree = withReadCounting(createFixture());
     expect(findLayers(tree.root, {})).toEqual({});
