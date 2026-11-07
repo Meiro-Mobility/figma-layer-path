@@ -7,6 +7,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-07
+
 ### Added
 
 - `findLayers(root, map, finder)` takes an optional finder, so lookups on the same instance
@@ -48,7 +50,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   result in the map's shape.
 - Types `LayerNode`, `LayerPath`, `LayerMap`, `FoundLayers`, and `LayerFinder`.
 
-[Unreleased]: https://github.com/Meiro-Mobility/figma-layer-path/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/Meiro-Mobility/figma-layer-path/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/Meiro-Mobility/figma-layer-path/releases/tag/v0.3.0
 [0.2.0]: https://github.com/Meiro-Mobility/figma-layer-path/releases/tag/v0.2.0
 [0.1.1]: https://github.com/Meiro-Mobility/figma-layer-path/releases/tag/v0.1.1
 [0.1.0]: https://github.com/Meiro-Mobility/figma-layer-path/releases/tag/v0.1.0
